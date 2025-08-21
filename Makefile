@@ -1,5 +1,5 @@
 # See LICENSE file for copyright and license details
-# Takum-HDL - takum VHDL implementation
+# Takum-HDL - Takum VHDL implementation
 .POSIX:
 .SUFFIXES:
 
@@ -14,8 +14,8 @@ RTL =\
 	rtl/encoder/encoder_logarithmic\
 
 SIMULATION =\
-	simulation/decoder/common_decoder_tb\
-	simulation/encoder/common_encoder_tb\
+	simulation/decoder/predecoder_tb\
+	simulation/encoder/postencoder_tb\
 
 all:
 

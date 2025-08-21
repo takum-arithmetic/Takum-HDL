@@ -2,27 +2,27 @@ library ieee;
 	use ieee.std_logic_1164.all;
 	use ieee.numeric_std.all;
 
-entity common_decoder_tb is
+entity predecoder_tb is
 	generic (
 		n : natural range 2 to natural'high := 16
 	);
-end entity common_decoder_tb;
+end entity predecoder_tb;
 
-architecture behave of common_decoder_tb is
-	signal clock                    : std_ulogic;
-	signal takum                    : std_ulogic_vector(n - 1 downto 0) := (others => '0');
-	signal sign_bit                 : std_ulogic;
-	signal sign_bit_reference       : std_ulogic;
-	signal characteristic           : integer range -255 to 254;
-	signal characteristic_reference : integer range -255 to 254;
-	signal mantissa_bits            : std_ulogic_vector(n - 6 downto 0);
-	signal mantissa_bits_reference  : std_ulogic_vector(n - 6 downto 0);
-	signal is_zero                  : std_ulogic;
-	signal is_zero_reference        : std_ulogic;
-	signal is_nar                   : std_ulogic;
-	signal is_nar_reference         : std_ulogic;
-	signal precision                : natural range 0 to n - 5;
-	signal precision_reference      : natural range 0 to n - 5;
+architecture behave of predecoder_tb is
+	signal clock                                : std_ulogic;
+	signal takum                                : std_ulogic_vector(n - 1 downto 0) := (others => '0');
+	signal sign_bit                             : std_ulogic;
+	signal sign_bit_reference                   : std_ulogic;
+	signal characteristic_or_exponent           : integer range -255 to 254;
+	signal characteristic_or_exponent_reference : integer range -255 to 254;
+	signal mantissa_bits                        : std_ulogic_vector(n - 6 downto 0);
+	signal mantissa_bits_reference              : std_ulogic_vector(n - 6 downto 0);
+	signal is_zero                              : std_ulogic;
+	signal is_zero_reference                    : std_ulogic;
+	signal is_nar                               : std_ulogic;
+	signal is_nar_reference                     : std_ulogic;
+	signal precision                            : natural range 0 to n - 5;
+	signal precision_reference                  : natural range 0 to n - 5;
 
 	constant takum_end : std_ulogic_vector(n - 1 downto 0) := (others => '1');
 	function ulogic_vector_to_string (
@@ -42,29 +42,31 @@ architecture behave of common_decoder_tb is
 begin
 
 	-- UUT instantiation
-	decoder : entity work.common_decoder(rtl)
+	decoder : entity work.predecoder(rtl)
 		generic map (
-			n => n
+			n => n,
+			output_exponent => '0'
 		)
 		port map (
-			takum          => takum,
-			sign_bit       => sign_bit,
-			characteristic => characteristic,
-			mantissa_bits  => mantissa_bits,
-			precision      => precision,
-			is_zero        => is_zero,
-			is_nar         => is_nar
+			takum                      => takum,
+			sign_bit                   => sign_bit,
+			characteristic_or_exponent => characteristic_or_exponent,
+			mantissa_bits              => mantissa_bits,
+			precision                  => precision,
+			is_zero                    => is_zero,
+			is_nar                     => is_nar
 		);
 
 	-- Reference unit instantiation
-	decoder_reference : entity work.common_decoder(behave)
+	decoder_reference : entity work.predecoder(behave)
 		generic map (
-			n => n
+			n => n,
+			output_exponent => '0'
 		)
 		port map (
 			takum          => takum,
 			sign_bit       => sign_bit_reference,
-			characteristic => characteristic_reference,
+			characteristic_or_exponent => characteristic_or_exponent_reference,
 			mantissa_bits  => mantissa_bits_reference,
 			precision      => precision_reference,
 			is_zero        => is_zero_reference,
@@ -94,12 +96,12 @@ begin
 				       std_ulogic'image(sign_bit_reference) &
 				       ")"
 				severity error;
-			assert characteristic = characteristic_reference
+			assert characteristic_or_exponent = characteristic_or_exponent_reference
 				report ulogic_vector_to_string(takum) &
-				       ": characteristic mismatch (rtl characteristic=" &
-				       integer'image(characteristic) &
-				       ", behave characteristic=" &
-				       integer'image(characteristic_reference) &
+				       ": characteristic_or_exponent mismatch (rtl characteristic_or_exponent=" &
+				       integer'image(characteristic_or_exponent) &
+				       ", behave characteristic_or_exponent=" &
+				       integer'image(characteristic_or_exponent_reference) &
 				       ")"
 				severity error;
 			assert mantissa_bits = mantissa_bits_reference
