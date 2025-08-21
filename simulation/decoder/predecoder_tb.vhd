@@ -44,7 +44,7 @@ begin
 	-- UUT instantiation
 	decoder : entity work.predecoder(rtl)
 		generic map (
-			n => n,
+			n               => n,
 			output_exponent => '0'
 		)
 		port map (
@@ -60,17 +60,17 @@ begin
 	-- Reference unit instantiation
 	decoder_reference : entity work.predecoder(behave)
 		generic map (
-			n => n,
+			n               => n,
 			output_exponent => '0'
 		)
 		port map (
-			takum          => takum,
-			sign_bit       => sign_bit_reference,
+			takum                      => takum,
+			sign_bit                   => sign_bit_reference,
 			characteristic_or_exponent => characteristic_or_exponent_reference,
-			mantissa_bits  => mantissa_bits_reference,
-			precision      => precision_reference,
-			is_zero        => is_zero_reference,
-			is_nar         => is_nar_reference
+			mantissa_bits              => mantissa_bits_reference,
+			precision                  => precision_reference,
+			is_zero                    => is_zero_reference,
+			is_nar                     => is_nar_reference
 		);
 
 	drive_clock : process is

@@ -9,15 +9,15 @@ entity postencoder_tb is
 end entity postencoder_tb;
 
 architecture behave of postencoder_tb is
-	signal clock                    : std_ulogic;
-	signal takum                    : std_ulogic_vector(n - 1 downto 0) := (others => '0');
-	signal takum_reference          : std_ulogic_vector(n - 1 downto 0) := (others => '0');
-	signal sign_bit                 : std_ulogic;
-	signal characteristic           : integer range -255 to 254;
-	signal mantissa_bits            : std_ulogic_vector(n - 6 downto 0);
-	signal is_zero                  : std_ulogic;
-	signal is_nar                   : std_ulogic;
-	signal precision                : natural range 0 to n - 5;
+	signal clock           : std_ulogic;
+	signal takum           : std_ulogic_vector(n - 1 downto 0) := (others => '0');
+	signal takum_reference : std_ulogic_vector(n - 1 downto 0) := (others => '0');
+	signal sign_bit        : std_ulogic;
+	signal characteristic  : integer range -255 to 254;
+	signal mantissa_bits   : std_ulogic_vector(n - 6 downto 0);
+	signal is_zero         : std_ulogic;
+	signal is_nar          : std_ulogic;
+	signal precision       : natural range 0 to n - 5;
 
 	constant takum_end : std_ulogic_vector(n - 1 downto 0) := (others => '1');
 	function ulogic_vector_to_string (
@@ -39,7 +39,7 @@ begin
 	-- Reference decoder instantiation
 	decoder_reference : entity work.predecoder(rtl)
 		generic map (
-			n => n,
+			n               => n,
 			output_exponent => '0'
 		)
 		port map (
