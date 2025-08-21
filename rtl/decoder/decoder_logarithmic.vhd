@@ -1,3 +1,4 @@
+-- See LICENSE file for copyright and license details
 library ieee;
 	use ieee.std_logic_1164.all;
 	use ieee.std_logic_misc.all;
