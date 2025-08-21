@@ -1,5 +1,5 @@
 # See LICENSE file for copyright and license details
-# Takum-HDL - Takum VHDL implementation
+# Takum-Codec-RTL - Takum Codec VHDL implementation
 .POSIX:
 .SUFFIXES:
 
